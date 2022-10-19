@@ -4,22 +4,22 @@ import openpyxl
 import datetime
 import os
 
-url='https://www.bkjx.sdu.edu.cn/sanji_list.jsp?totalpage=9&PAGENUM=1&urltype=tree.TreeTempUrl&wbtreeid=1013'
+url='https://www.bkjx.sdu.edu.cn/sanji_list.jsp?totalpage=154&PAGENUM=1&urltype=tree.TreeTempUrl&wbtreeid=1010'
 headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'}
 page_data=requests.get(url=url,headers=headers).text
 #获取第一页的title与link
 links='div style="float:left"><a href="(.*?)"'
-titles='target=_blank title="(.*?)" style=""'
+titles='target=_blank title="(.*?)" style='
 times='<div style="float:right;">(.*?)</div>'
 links_data=re.findall(links,page_data,re.S)
 titles_data=re.findall(titles,page_data,re.S)
 times_data=re.findall(times,page_data,re.S)
 
 #获取总页数    
-pagemax=int(re.findall('TD nowrap align=left width=1% id=fanye128813>共130条&nbsp;&nbsp;1/(.*?)&nbsp',page_data,re.S)[0])
+pagemax=int(re.findall('TD nowrap align=left width=1% id=fanye128813>.*?&nbsp;&nbsp;1/(.*?)&nbsp',page_data,re.S)[0])
 #获取所有title与link
 for i in range(2,pagemax+1):
-    url='https://www.bkjx.sdu.edu.cn/sanji_list.jsp?totalpage=9&PAGENUM='+str(i)+'&urltype=tree.TreeTempUrl&wbtreeid=1013'
+    url='https://www.bkjx.sdu.edu.cn/sanji_list.jsp?totalpage=154&PAGENUM='+str(i)+'&urltype=tree.TreeTempUrl&wbtreeid=1010'
     page_data=requests.get(url=url,headers=headers).text
     links_data.extend(re.findall(links,page_data,re.S))
     titles_data.extend(re.findall(titles,page_data,re.S))
@@ -57,6 +57,3 @@ if 'Sheet' in wb.sheetnames:        # 删除自动生成的’Sheet‘表格
     del wb['Sheet']
 wb.save(file_path)      # 保存并关闭文件
 wb.close()
-
-
-
