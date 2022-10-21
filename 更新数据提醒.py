@@ -48,5 +48,5 @@ def getInfo():
         print("数据未更新")
 
 sched = BlockingScheduler()
-sched.add_job(getInfo, 'interval', seconds=10)
+sched.add_job(getInfo, 'interval', minutes=1)
 sched.start()
